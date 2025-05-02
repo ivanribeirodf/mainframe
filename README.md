@@ -61,3 +61,5 @@ Bem-vindo(a) ao meu repositório sobre **Mainframe**! Aqui você encontrará ano
 
 ## 🤝 Contribuições
 - Sugestões, correções e melhorias são bem-vindas! Fique à vontade para abrir uma issue ou fazer um pull request.
+
+“Mainframe não é coisa do passado. É a base do presente.” – Ivan Ribeiro
