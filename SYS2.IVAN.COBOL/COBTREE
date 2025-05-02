@@ -1,0 +1,50 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ARVORE DE NATAL.
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+      *
+       01  WS-ALTURA       PIC 99.
+       01  WS-ESPACOS      PIC X(30) VALUE SPACES.
+       01  WS-ESTRELAS     PIC X(30) VALUE SPACES.
+       01  WS-I            PIC 99.
+       01  WS-LINHA        PIC X(60).
+       01  WS-BASE         PIC X(60).
+       01  WS-CHAO         PIC X(60).
+      *
+       PROCEDURE DIVISION.
+       INICIO.
+           DISPLAY 'ALTURA DA ARVORE DE NATAL' UPON CONSOLE.
+           ACCEPT WS-ALTURA.
+      *
+           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > WS-ALTURA
+               COMPUTE WS-ESPACOS = WS-ALTURA - WS-I
+               STRING
+                   MOVE SPACES TO WS-LINHA.
+                   MOVE '*' TO WS-LINHA(WS-ESPACOS + 1:2 * WS-I - 1).
+                   INTO WS-LINHA
+               END-STRING
+               DISPLAY WS-LINHA
+           END-PERFORM
+      *
+           MOVE SPACES TO WS-BASE.
+           MOVE '|' TO WS-BASE(WS-ALTURA).
+           STRING.
+               WS-BASE
+               '|'
+               INTO WS-BASE
+           END-STRING.
+           DISPLAY WS-BASE.
+      *
+           MOVE SPACES(1:WS-ALTURA - 3) TO WS-CHAO
+           STRING.
+               WS-CHAO
+               "_ _ _"
+               INTO WS-CHAO
+           END-STRING.
+           DISPLAY WS-CHAO.
+      *
+           DISPLAY "FELIZ NATAL E PROSPERO ANO NOVO!"
+           STOP RUN.                      ó
+

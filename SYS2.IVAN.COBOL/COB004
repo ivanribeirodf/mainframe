@@ -1,0 +1,37 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. COB004.
+       AUTHOR.      IVAN RIBEIRO.
+      *
+       ENVIRONMENT DIVISION.
+      *
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01  STUDENTDETAILS.
+               02  STUDENTID        PIC 9(7) VALUE 0001.
+               02  STUDENTNAME.
+                   03  SURNAME      PIC X(12) VALUE 'IVAN RIBEIRO'.
+                   03  INITIALS     PIC XX    VALUE 'IR'.
+               02  COURSECODE       PIC X(4)  VALUE '0002'.
+               02  GENDER           PIC X     VALUE 'M'.
+      *YYMMDD
+       01  CURRENTDATE.
+               02  CURRENTYEAR      PIC 9(4).
+               02  CURRENTMONTH     PIC 99.
+               02  CURREBTDAY       PIC 99.
+      *YYDDD
+       01  DAYOFYEAR.
+               02 FILLER            PIC 9(4).
+               02 YEARDAY           PIC 9(3).
+      *HHMMSSSS
+       01  CURRENTTIME.
+               02  CURRENTHOUR      PIC 99.
+               02  CURRENTMINUTE    PIC 99.
+               02  FILLER           PIC 9(4).
+      *
+       PROCEDURE DIVISION.
+           DISPLAY 'NAME IS: '  INITIALS SPACE SURNAME.
+           DISPLAY 'DATE IS: ' CURRENTDATE.
+           DISPLAY 'TODAY IS: ' YEARDAY.
+           DISPLAY 'THE TIME IS: ' CURRENTHOUR ':' CURRENTMINUTE.
+           STOP RUN.
+

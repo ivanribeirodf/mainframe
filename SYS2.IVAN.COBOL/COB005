@@ -1,0 +1,46 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID.    COB005.
+      *
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+            SELECT COBFILE1 ASSIGN TO COBFILE2.
+      *
+       DATA DIVISION.
+       FILE SECTION.
+       FD  COBFILE1
+           LABEL RECORD OMITTED
+           BLOCK 0.
+       01  FILLER.
+           05 CAMP01        PIC X(2).
+           05 CAMP02        PIC X(5).
+           05 CAMP03        PIC X(10).
+           05 CAMP04        PIC X(13).
+           05 FILLER        PIC X(50).
+       WORKING-STORAGE SECTION.
+       01  SWITCHES.
+           05 EOF-SWITCH    PIC X VALUE 'N'.
+              88 EOF              VALUE 'Y'.
+      *
+       01  COUNTERS.
+           05 REC-COUNTER   PIC 9(3) VALUE 0.
+      *
+       PROCEDURE DIVISION.
+       000-MAIN.
+           OPEN INPUT COBFILE1.
+           PERFORM 100-PROCESS-RECORDS UNTIL EOF.
+           DISPLAY 'NUM OF RECS >>>>' REC-COUNTER.
+           CLOSE COBFILE1
+           STOP RUN.
+      *
+       100-PROCESS-RECORDS.
+           READ COBFILE1
+               AT END
+                   MOVE 'Y' TO EOF-SWITCH.
+           IF NOT EOF
+              COMPUTE REC-COUNTER = REC-COUNTER + 1
+              DISPLAY 'CAMPO01 >>>> ' CAMP01
+              DISPLAY 'CAMPO02 >>>> ' CAMP02
+              DISPLAY 'CAMPO03 >>>> ' CAMP03
+              DISPLAY 'CAMPO04 >>>> ' CAMP04.
+

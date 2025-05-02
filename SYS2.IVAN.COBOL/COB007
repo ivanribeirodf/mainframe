@@ -1,0 +1,95 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. COB007.
+       AUTHOR IVAN RIBEIRO.
+      *-----------------------------------------------------------------
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT IN-SAL  ASSIGN TO COBFILE3.
+           SELECT OUT-SAL ASSIGN TO COBOUT03.
+      *-----------------------------------------------------------------
+       DATA DIVISION.
+        FILE SECTION.
+        FD IN-SAL.
+           01 IN-REC.
+              05 SPID        PIC 9(3).
+              05 FILLER      PIC X.
+              05 SDATE.
+                 10 DD       PIC 9(2).
+                 10 FILLER   PIC X.
+                 10 MM       PIC 9(2).
+                 10 FILLER   PIC X.
+                 10 YYYY     PIC 9(4).
+                 10 FILLER   PIC X.
+              05 FILLER      PIC X.
+              05 SAMT        PIC 9(6)V99.
+        FD OUT-SAL.
+           01 OUT-REC        PIC X(80).
+       WORKING-STORAGE SECTION.
+        01 EOF        PIC X VALEU "Y".
+        01 MTH        PIC 99 OCCURS 3 TIMES.
+        01 MTH-SALE   PIC 9(6)V99 OCUURS 3 TIMES.
+        01 COMM       PIC 9(5)V99 OCCURS 3 TIMES.
+        01 CNT        PIC 99 VALUE 0.
+      *
+        01 REP-REC.
+           05 RPID    PIC Z(2)9.
+           05 FILLER  PIC X(3).
+           05 RMM     PIC Z(1)9.
+           05 FILLER  PIC X(3).
+           05 RAMT    PIC Z(6).99.
+           05 FILLER  PIC X(3).
+           05 RCOMM   PIC Z(4)9.99.
+           05 FILLER  PIC X(3).
+           05 GTOT    PIC Z(5)9.99.
+      *
+        01 HEAD-REC.
+           05 HPID      PIC Z(7)  VALUE "SPID".
+           05 HMM       PIC Z(5)  VALUE "MM".
+           05 AMOUNT    PIC Z(12) VALUE "AMOUNT".
+           05 COMMISION PIC Z(11) VALUE "COMMISSION".
+           05 GTOTAL    PIC Z(8)  VALUE "TOTAL".
+      *
+        01 DASH         PIC X(70) VALUE ALL "=".
+        01 TOT          PIC Z(5)9.99.
+      *-----------------------------------------------------------------
+       PROCEDURE DIVISION.
+        PERFORM VARYING CNT FROM 1 BY 1 UNTIL CNT>3
+         MOVE 0 TO MTH-SALE(CNT)
+         MOVE 1 TO COMM (CNT)
+        END-PERFORM.
+      *
+        OPEN OUTPUT OUT-SAL.
+        WRITE OUT-REC FROM DASH AFTER 2 LINES.
+        WRITE OUT-REC FROM HEAD-REC AFTER 2 LINES.
+        WRITE OUT-REC FROM DASH AFTER 2 LINES.
+      *
+        OPEN INPUT IN-SAL.
+        PERFORM UNTIL EOF="N"
+         READ IN-SAL
+          AT END MOVE "N" TO EOF
+          NOT AT END
+          COMPUTE MTH-SALE(SPID) = MTH-SALE(SPID) + SAMT
+          MOVE MM TO MTH(SPID)
+         END-READ
+        END-PERFORM.
+      *
+        PERFORM VARYING CNT FROM 1 BY 1 UNTIL CNT>3
+         IF MTH-SALE (CNT) < 50000
+          COMPUTE COMM(CNT) = MTH-SALE(CNT) * 0.10
+         ELSE
+          COMPUTE COMM(CNT) = MTH-SALE(CNT) * 0.15
+        END-PERFORM.
+      *
+        CLOSE IN-SAL.
+        PERFORM VARYING CNT FROM 1 BY 1 UNTIL CNT>3
+          MOVE CNT TO RPID
+          MOVE MTH(CNT) TO RMM
+          MOVE MTH-SALE(CNT) TO RAMT
+          DISPLAY MTH-SALE(CNT) "  "RAMT
+          MOVE COMM(CNT) TO RCOMM
+          COMPUTE GTOT = MTH(CNT) + COMM(CNT)
+          WRITE OUT-REC FROM REP-REC AFTER ADVANCING 1 LINE
+        END-PERFORM.
+        STOP RUN.
+

@@ -1,0 +1,6 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PROCOB.
+       PRUCEDURE DIVISION.
+           DISPLAY 'HELLO WORLD!'.
+           STOP RUN.
+
